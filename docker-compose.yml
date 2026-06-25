@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: fit-tracker-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: fit-tracker
+      POSTGRES_USER: fit-tracker
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5433:5432"
+    volumes:
+      - fit-tracker-postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fit-tracker -d fit-tracker"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  fit-tracker-postgres-data:
